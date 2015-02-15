@@ -2,7 +2,7 @@
 var map = new Map(8,8);
 console.log('Map:', map);
 console.log('map[0][1]:', map[0][1]);
-drawMap(map) // Draw map in view
+drawMap(map); // Draw map in view
 /** Boolean of whether all of the land in the map is connected or not
  * @param {2D Array} map 2D Array that corresponds to the rows and columns of a map
  * @returns {Boolean} 
@@ -27,31 +27,13 @@ var landIsConnected = function(map){
 		return true
 	}
 	return false;
-	// var island1 = explore(map, possibles[0]);
-	// if(island1.length == possibles.length){
-	// 	return true;
-	// } else {
-	// 	console.log(explore(map, possibles[0]) + 'vs' + possibles.length);
-	// 	return false;
-	// }
 };
-console.log('Connected:', landIsConnected(map));
-
-// Search till stop
-//	check to see if it is land
-//		if it is land check its surroundings
-//			if a surronding piece is land start check there
-//			else land is an island
-
-
-
-function isWater(map, x, y){
-	if(map[x][y] == water){
-		return true;
-	}
-	return false;
+function showConnectionStatus(map){
+	console.log('Connected:', landIsConnected(map));
+  document.getElementById('status').appendChild(document.createTextNode('Land Connected: ' + landIsConnected(map)));
 }
 
+showConnectionStatus(map);
 
 
 function explore(map, eDims, pastDims, island, toExplore){
@@ -65,15 +47,8 @@ function explore(map, eDims, pastDims, island, toExplore){
 	if(!pastDims){
 		var pastDims = eDims; 
 	}
-	// if(!map[x]){
-	// 	console.error('Row '+ x + ' does not exist in map?', map);
-	// 	return [];
-	// }
-			console.log('island:', island, toExplore);
-		console.log('lengths:', island.length, toExplore.length);
-
-
-
+	console.log('island:', island, toExplore);
+	console.log('lengths:', island.length, toExplore.length);
 	var oldX = pastDims[0];
 	var oldY = pastDims[1];
 	if(map[x][y] == land && !isExplored([x,y], island)){
@@ -102,9 +77,6 @@ function explore(map, eDims, pastDims, island, toExplore){
 	}
 
 }
-
-
-//[TODO] Check if search location is already part island
 
 function isExplored(locationArray, island){
 	//Check to see if location has been explored
