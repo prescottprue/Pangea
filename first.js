@@ -1,8 +1,7 @@
-//Given a map, build a function that returns boolean whether islands are connected or not
-var map = new Map(8,8);
+var map = new Map(8,8); // Build a new 8/8 map using the map constructor
 console.log('Map:', map);
-console.log('map[0][1]:', map[0][1]);
 drawMap(map); // Draw map in view
+
 /** Boolean of whether all of the land in the map is connected or not
  * @param {2D Array} map 2D Array that corresponds to the rows and columns of a map
  * @returns {Boolean} 
@@ -18,16 +17,20 @@ var landIsConnected = function(map){
 			}
 		}
 	}
-	// explore(map, possibles[0]);
-	console.log('calling explore with map:', map, possibles[0], possibles);
 	console.log('Connected:' + explore(map, possibles[0], null, null, possibles));
-	var firstIsland = [];
+	var firstIsland = []; //Land variable to be set by exploring
+	//[TODO] Handle variables differenlty here (Return with recusion?)
 	explore(map, possibles[0], null, firstIsland, possibles);
 	if(firstIsland.length == possibles.length){
 		return true
 	}
 	return false;
 };
+/** Display land connection status within view
+ * @param {2D Array} map 2D Array that corresponds to the rows and columns of a map
+ * @returns {Boolean} 
+ *
+ */
 function showConnectionStatus(map){
 	console.log('Connected:', landIsConnected(map));
   document.getElementById('status').appendChild(document.createTextNode('Land Connected: ' + landIsConnected(map)));
@@ -35,7 +38,15 @@ function showConnectionStatus(map){
 
 showConnectionStatus(map);
 
-
+/** Show connection
+ * @function explore
+ * @param {2D Array} map 2D Array that corresponds to the rows and columns of a map
+ * @param {Array} exploreCords Array that contains corridinates to currently explore
+ * @param {Array} pastCords Preview coordinates in recusion step
+ * @param {Array} toExplore Array of cooridates to explore
+ *
+ */
+ //[TODO] Remove checking past dims and just check explored
 function explore(map, eDims, pastDims, island, toExplore){
 	console.log('exploring:', eDims);
 	var x = eDims[0];
@@ -54,7 +65,7 @@ function explore(map, eDims, pastDims, island, toExplore){
 	if(map[x][y] == land && !isExplored([x,y], island)){
 		console.log('['+ x +',' + y + '] is land. Adding to island.');
 		island.push(eDims);
-			//Look Left if not a boundary or where was just searched
+		//Look Left if not a boundary or where was just searched
 		if(x > 0 &&  x - 1 !== pastDims[0]){
 			console.log('Exploring left from: ['+ x +',' + y + ']');
 			explore(map, [x - 1, y], eDims, island, toExplore);
@@ -75,9 +86,14 @@ function explore(map, eDims, pastDims, island, toExplore){
 			explore(map, [x, y+1], eDims, island, toExplore);
 		}
 	}
-
 }
-
+/** Return if a set of coordinates has been explored
+ * @function isExplored
+ * @param {Array} map 2D Dimensions to check for within island
+ * @param {Array} island List of current island coordinates
+ * @returns {Boolean} hasBeenExplored
+ *
+ */
 function isExplored(locationArray, island){
 	//Check to see if location has been explored
 	var exists = false;
@@ -89,4 +105,3 @@ function isExplored(locationArray, island){
 	}
 	return exists;
 }
-
