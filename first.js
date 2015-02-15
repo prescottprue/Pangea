@@ -9,7 +9,6 @@ drawMap(map) // Draw map in view
  *
  */
 var landIsConnected = function(map){
-	var islands = [];
 	var possibles = [];
  	for(i = 0; i < map.length; i++){ //Loop Through Rows
 		for(j = 0; j < map[i].length; j++){ //Loop Through Columns
@@ -20,10 +19,23 @@ var landIsConnected = function(map){
 		}
 	}
 	// explore(map, possibles[0]);
-
-	console.log('one search', explore(map, possibles[0]));
+	console.log('calling explore with map:', map, possibles[0], possibles);
+	console.log('Connected:' + explore(map, possibles[0], null, null, possibles));
+	var firstIsland = [];
+	explore(map, possibles[0], null, firstIsland, possibles);
+	if(firstIsland.length == possibles.length){
+		return true
+	}
+	return false;
+	// var island1 = explore(map, possibles[0]);
+	// if(island1.length == possibles.length){
+	// 	return true;
+	// } else {
+	// 	console.log(explore(map, possibles[0]) + 'vs' + possibles.length);
+	// 	return false;
+	// }
 };
-landIsConnected(map);
+console.log('Connected:', landIsConnected(map));
 
 // Search till stop
 //	check to see if it is land
@@ -42,56 +54,64 @@ function isWater(map, x, y){
 
 
 
-function explore(map, eDims, pastDims, island){
+function explore(map, eDims, pastDims, island, toExplore){
+	console.log('exploring:', eDims);
 	var x = eDims[0];
 	var y = eDims[1];
-	if(!island){
+	if(!island || typeof island == "undefined"){
 		var island = [];
 		console.log('New Island created with ['+ x +', '+ y +']');
 	}
 	if(!pastDims){
 		var pastDims = eDims; 
 	}
-	if(map[x][y] == land){
+	// if(!map[x]){
+	// 	console.error('Row '+ x + ' does not exist in map?', map);
+	// 	return [];
+	// }
+			console.log('island:', island, toExplore);
+		console.log('lengths:', island.length, toExplore.length);
+
+
+
+	var oldX = pastDims[0];
+	var oldY = pastDims[1];
+	if(map[x][y] == land && !isExplored([x,y], island)){
 		console.log('['+ x +',' + y + '] is land. Adding to island.');
 		island.push(eDims);
 			//Look Left if not a boundary or where was just searched
 		if(x > 0 &&  x - 1 !== pastDims[0]){
-			console.log('Exploring up from: ['+ x +',' + y + ']');
-			explore(map, [x - 1, y], eDims, island);
+			console.log('Exploring left from: ['+ x +',' + y + ']');
+			explore(map, [x - 1, y], eDims, island, toExplore);
 		}
 		//Look Up
-		if(y > 0 &&  y + 1 !== pastDims[1]){ //Is not a boundary
+		if(y > 0 &&  y - 1 !== pastDims[1]){ //Is not a boundary
 			console.log('Exploring up from ['+ x +',' + y + ']');
-			explore(map, [x, y+1], eDims, island);
+			explore(map, [x, y-1], eDims, island, toExplore);
 		}
 		//Look Right
-		if(x < map.length &&  x + 1 !== pastDims[0]){
+		if(x + 1 < map.length &&  x + 1 !== pastDims[0]){
 			console.log('Exploring Right from ['+ x +',' + y + ']');
-			explore(map, [x + 1, y], eDims, island);
+			explore(map, [x + 1, y], eDims, island, toExplore);
 		}
 		//Look Down
-		if(y < map[x].length &&  y - 1 !== pastDims[1]){
+		if(y < map[x].length &&  y + 1 !== pastDims[1]){
 			console.log('Exploring Down from ['+ x +',' + y + ']');
-			explore(map, [x, y-1], eDims, island);
+			explore(map, [x, y+1], eDims, island, toExplore);
 		}
 	}
 
-
-
-	if(map[x][y] !== map[pastDims[0], pastDims[1]]){
-		return island.length;
-	}
 }
 
 
-//[TODO] Check if search location is already part of an island
+//[TODO] Check if search location is already part island
 
-function isExplored(x, y){
+function isExplored(locationArray, island){
 	//Check to see if location has been explored
 	var exists = false;
-	for(i = 0; i < hasBeenExplored.length; i++){ //Loop through hasBeenExplored array
-		if(hasBeenExplored[i][0] == x && hasBeenExplored[i][1] == y){ // Check for matching value 
+	for(i = 0; i < island.length; i++){ //Loop through island array
+		if(island[i][0] == locationArray[0] && island[i][1] == locationArray[1]){ // Check for matching value 
+			console.log(locationArray, ' has been explored before.', island);
 			exists = true;
 		}
 	}

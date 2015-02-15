@@ -15,7 +15,7 @@
  */
  var land = "M";
  var water = "~";
- var possible = land + water;//Set land and water as possible options
+ var possible = land + water + land + land + land;//Set land and water as possible options
  var Map = function(rows, cols) {
  	var map = [];
  	if(!rows || typeof rows != "number"){ // Check for rows or set default
@@ -55,4 +55,5 @@
         canvas.fillRect(x*unitSize, y*unitSize, unitSize, unitSize ); //Draw box
       }  
     }
-	}
+	};
+
