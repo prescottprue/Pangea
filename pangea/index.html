@@ -1,0 +1,26 @@
+<html>
+	<head>
+		<title>Pangea</title>
+		<script src="../closure-library/closure/goog/base.js"></script>
+		<script src="defaults.js"></script>
+		<script src="utils.js"></script>
+		<script src="explorer.js"></script>
+
+	</head>
+	<body>
+		<div id="main" style="text-align:center; height:350px;">
+			<div id="info">
+				<span style="margin-top:15px;" id="status"></span>
+			</div>
+		</div>
+		<script src="ui.js"></script>
+		<script src="pangea.js"></script>
+		<script>
+			var map = new pangea.Map(); // Build a new 8/8 map using the map constructor
+			// console.log('Map:', map);
+			// console.log('Canvas:', document.getElementById("canvas").getContext("2d"));
+			map.draw(document.getElementById("main"));
+			map.showConnectionStatus(document.getElementById("main"));
+		</script>
+	</body>
+</html>

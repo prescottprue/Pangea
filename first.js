@@ -21,6 +21,7 @@ var landIsConnected = function(map){
 	var firstIsland = []; //Land variable to be set by exploring
 	//[TODO] Handle variables differenlty here (Return with recusion?)
 	explore(map, possibles[0], null, firstIsland, possibles);
+	console.log('Blocks of land:', possibles.length,'\n Island length: ', firstIsland.length);
 	if(firstIsland.length == possibles.length){
 		return true
 	}
@@ -31,9 +32,16 @@ var landIsConnected = function(map){
  * @returns {Boolean} 
  *
  */
-function showConnectionStatus(map){
+var showConnectionStatus = function (map){
 	console.log('Connected:', landIsConnected(map));
-  document.getElementById('status').appendChild(document.createTextNode('Land Connected: ' + landIsConnected(map)));
+	var connectedStatus = landIsConnected(map)
+	var statusText = document.createTextNode(connectedStatus);
+	var statusEle = document.getElementById('status');
+	if(!connectedStatus){
+		statusEle.style = {color:"red"};
+	}
+	statusEle.appendChild(statusText);
+
 }
 
 showConnectionStatus(map);
@@ -58,31 +66,27 @@ function explore(map, eDims, pastDims, island, toExplore){
 	if(!pastDims){
 		var pastDims = eDims; 
 	}
-	console.log('island:', island, toExplore);
-	console.log('lengths:', island.length, toExplore.length);
-	var oldX = pastDims[0];
-	var oldY = pastDims[1];
 	if(map[x][y] == land && !isExplored([x,y], island)){
 		console.log('['+ x +',' + y + '] is land. Adding to island.');
 		island.push(eDims);
 		//Look Left if not a boundary or where was just searched
-		if(x > 0 &&  x - 1 !== pastDims[0]){
-			console.log('Exploring left from: ['+ x +',' + y + ']');
+		if(x > 0){
+			// console.log('Exploring left from: ['+ x +',' + y + ']');
 			explore(map, [x - 1, y], eDims, island, toExplore);
 		}
 		//Look Up
-		if(y > 0 &&  y - 1 !== pastDims[1]){ //Is not a boundary
-			console.log('Exploring up from ['+ x +',' + y + ']');
+		if(y > 0){ //Is not a boundary
+			// console.log('Exploring up from ['+ x +',' + y + ']');
 			explore(map, [x, y-1], eDims, island, toExplore);
 		}
 		//Look Right
-		if(x + 1 < map.length &&  x + 1 !== pastDims[0]){
-			console.log('Exploring Right from ['+ x +',' + y + ']');
+		if(x + 1 < map.length){
+			// console.log('Exploring Right from ['+ x +',' + y + ']');
 			explore(map, [x + 1, y], eDims, island, toExplore);
 		}
 		//Look Down
-		if(y < map[x].length &&  y + 1 !== pastDims[1]){
-			console.log('Exploring Down from ['+ x +',' + y + ']');
+		if(y < map[x].length){
+			// console.log('Exploring Down from ['+ x +',' + y + ']');
 			explore(map, [x, y+1], eDims, island, toExplore);
 		}
 	}

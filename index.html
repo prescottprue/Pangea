@@ -1,19 +1,27 @@
 <html>
 	<head>
 		<title>Pangea</title>
-			<script src="closure-library/closure/goog/base.js"></script>
+		<script src="closure-library/closure/goog/base.js"></script>
+		<!-- <script src="buildMap.js"></script> -->
+		<script src="pangea/pangea.js"></script>
+		<!-- <script src="pangea/utils.js"></script> -->
 
 	</head>
-	<canvas id="canvas"></canvas>
-
-
-
 	<body>
-
-			<div style="text-align:center;">
-				<h2 id="status"></h2>
+		<div style="text-align:center;">
+			<canvas id="canvas"></canvas><br>
+			<div id="info">
+				<span style="margin-top:15px;" id="status"></span>
 			</div>
-						<script src="buildMap.js"></script>
-			<script src="first.js"></script>
+		</div>
+		<script>
+			var map = new pangea.Map(); // Build a new 8/8 map using the map constructor
+			console.log('Map:', map);
+			// console.log('Map:', map);
+
+			// map.draw(); // Draw map in view
+			// showConnectionStatus(map);
+
+		</script>
 	</body>
 </html>

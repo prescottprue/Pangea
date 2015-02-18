@@ -1,4 +1,3 @@
-
 /** Build a map array that is a 2D array of randomly placed land and water. 
  * Map object then also maps the drawMap function to _.draw
  * @constructor Map
@@ -13,31 +12,32 @@
  * 	    [~~~~~~MMM]]
  *
  */
- var land = "M";
- var water = "~";
- var possible = land + water + land + land + land;//Set land and water as possible options
- var Map = function(rows, cols) {
- 	var map = [];
- 	if(!rows || typeof rows != "number"){ // Check for rows or set default
- 		rows = defaultNum;
- 	}
- 	if(!cols || typeof cols != "number"){ // Check for cols or set default
- 		cols = defaultNum;
- 	}
- 	for(x = 0; x < rows; x++){
- 		var row = [];
- 		for(y = 0; y < cols; y++){
- 			//Randomly select one of the possible characters and push to current position.
- 			row.push(possible.charAt(Math.floor(Math.random()* possible.length)));
- 		}
- 		map.push(row);
- 	}
- 	return map;
- }
+  goog.provide('pangea.Map');
+  var land = "M";
+  var water = "~";
+  var possible = land + water + land + land + land;//Set land and water as possible options
+  pangea.Map = function(rows, cols) {
+  	var map = {data:[]};
+  	this.data = [];
+  	if(!rows || typeof rows != "number"){ // Check for rows or set default
+  		rows = defaultNum;
+  	}
+  	if(!cols || typeof cols != "number"){ // Check for cols or set default
+  		cols = defaultNum;
+  	}
+  	for(x = 0; x < rows; x++){
+  		var row = [];
+  		for(y = 0; y < cols; y++){
+  			//Randomly select one of the possible characters and push to current position.
+  			row.push(possible.charAt(Math.floor(Math.random()* possible.length)));
+  		}
+  		this.data.push(row);
+  	}
+  }
  /** Function to draw the map in the view. 
   * @params {2D Array} map The map array to draw in the view.
   */ 
-	var drawMap = function(map){
+	pangea.Map.prototype.draw = function(map){
 		var canvasElm = document.getElementById("canvas"),
 		defaultNum = 8,
 		dimensions = 150; //
@@ -57,3 +57,4 @@
     }
 	};
 
+// goog.exportSymbol('Map', pangea.map);
