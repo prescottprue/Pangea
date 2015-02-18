@@ -98,7 +98,7 @@ function explore(map, eDims, pastDims, island, toExplore){
  * @returns {Boolean} hasBeenExplored
  *
  */
-function isExplored(locationArray, island){
+var isExplored = function(locationArray, island){
 	//Check to see if location has been explored
 	var exists = false;
 	for(i = 0; i < island.length; i++){ //Loop through island array
